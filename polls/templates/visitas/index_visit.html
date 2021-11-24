@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<title>Visit Page</title>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<body>
+    {% if visit_list %}
+        <img src="https://i.gifer.com/7BZb.gif" alt="HTML5" style="width:600px;height:445px">
+        {% for visit in visit_list %}
+            <table>
+                <tr>
+                    <th>Visit Number: </th>
+                    <th>Visit Date: </th>
+                    <th>Responsible Team: </th>
+                    <th>Brief description of the visit: </th>
+                </tr>
+                <tr>
+                    <td>{{ visit.id }}</td>
+                    <td>{{ visit.visit_date }}</td>
+                    <td>{{ visit.visit_team}}</td>
+                    <td>{{ visit.description }}</td>
+                </tr>
+                
+            </table>
+        {% endfor %}
+    {% else %}
+        <p>No polls are available</p>
+    {% endif %}
+</body>
+</html>

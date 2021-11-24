@@ -1,0 +1,13 @@
+<!-- <!DOCTYPE html> -->
+
+{% if equipa_list %}
+    <ul>
+    {% for equipa in equipa_list %}
+        <h1>{{ equipa.name }}</h1>
+        <!-- <button><a href="{% url 'polls:index_visit' %}">Entrar</a></button> -->
+
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available</p>
+{% endif %}

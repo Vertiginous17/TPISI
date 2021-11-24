@@ -1,0 +1,49 @@
+<!-- <!DOCTYPE html> -->
+<title>Lar Page</title>
+<style>
+    table, th, td {
+      border:1px solid black;
+    }
+</style>
+<div class="topnav">
+    <a class="active" href="#lar">Lar</a>
+    <a class="active" href="index_produto.html">Produtos</a>
+    <a class="active" href="visit.html">Visitas</a>
+    <a class="active" href="index_equipa.html">Equipas</a>
+    <a class="active" href="#requisicoes">Requisições</a>
+</div>
+{% if lar_list %}
+    <img src="https://casaderepousoemsaopaulo.com/blog/wp-content/uploads/2019/04/lar-para-idosos.jpg" alt="HTML5" style="width:700px;height:450px">
+    <ul>
+    {% for lar in lar_list %}
+        <li>
+            <h1>{{ lar.name }}</h1>
+            <!-- title does uppercase -->
+            <h2>{{ lar.owner|title }} - CEO</h2>
+            <h3>Users</h3>
+            {% if lar.users %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Staff</th>
+                </tr>
+                {% for user in lar.users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_staff }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available</p>
+{% endif %}
