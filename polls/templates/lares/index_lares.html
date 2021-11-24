@@ -6,14 +6,43 @@
     }
 </style>
 <div class="topnav">
-    <a class="active" href="#lar">Lar</a>
-    <a class="active" href="index_produto.html">Produtos</a>
-    <a class="active" href="visit.html">Visitas</a>
-    <a class="active" href="index_equipa.html">Equipas</a>
-    <a class="active" href="#requisicoes">Requisições</a>
+    <a class="active" href="/lar/">Lar</a>
+    <a href="/produt/">Produtos</a>
+    <a href="/visit/">Visitas</a>
+    <a href="/equipa/">Equipas</a>
+    <a href="">Requisições</a>
 </div>
+<style>
+    .topnav {
+        background-color: black;
+        overflow: hidden;
+    }
+    .topnav a{
+        float: left;
+        color: #ffffff;
+        text-align: center;
+        padding: 14px 16px;
+        font-size: 17px;
+    }
+    .topnav a:hover{
+        background-color: #808080;
+        color: black;
+    }
+    .topnav a.active{
+        background-color: white;
+        color: black;
+    }
+</style>
+<div class="center">
 {% if lar_list %}
-    <img src="https://casaderepousoemsaopaulo.com/blog/wp-content/uploads/2019/04/lar-para-idosos.jpg" alt="HTML5" style="width:700px;height:450px">
+    <div class="image">
+        <img src="https://casaderepousoemsaopaulo.com/blog/wp-content/uploads/2019/04/lar-para-idosos.jpg" alt="HTML5" style="width:700px;height:450px">
+    </div>
+    <style>
+        .image{
+            align-items: center;
+        }
+    </style>
     <ul>
     {% for lar in lar_list %}
         <li>
@@ -47,3 +76,11 @@
 {% else %}
     <p>No polls are available</p>
 {% endif %}
+</div>
+<div class="bottom"> </div>
+<style>
+    .bottom{
+        background-color: black;
+        padding: 14px 16px;
+    }
+</style>
