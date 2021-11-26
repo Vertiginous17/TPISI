@@ -16,7 +16,23 @@ def index(request):
     if not request.user.is_authenticated:
         return render(request, "polls/login.html")
 
+    equipas = Equipa.objects.all()
+    
+    context = {
+        'index_list' : []
+    }
+
+
+    for equipa in equipas: 
+        index_json = {
+            'name' : equipa.name,
+            'users' : [{'id': u.id, 'username': u.username, 'name': u.first_name + ' ' + u.last_name, 
+                        'email': u.email, 'is_staff': u.is_staff } for u in equipa.team_user.all()]
+        }
+        context['index_list'].append(index_json)
+    
     return render(request, 'polls/index.html')
+
 
 def register_request(request):
     if request.method == "POST":
@@ -29,6 +45,8 @@ def register_request(request):
 	    messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render (request=request, template_name="polls/register.html", context={"register_form":form})
+
+
 
 def login_request(request):
     if request.method == "POST":
@@ -47,6 +65,8 @@ def login_request(request):
         	messages.error(request,"Invalid username or password.")
     form = AuthenticationForm()
     return render(request=request, template_name="polls/login.html", context={"login_form":form})
+
+
 
 # Lar view
 def index_lares(request):
