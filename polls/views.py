@@ -22,7 +22,6 @@ def index(request):
         'index_list' : []
     }
 
-
     for equipa in equipas: 
         index_json = {
             'name' : equipa.name,
@@ -32,6 +31,7 @@ def index(request):
         context['index_list'].append(index_json)
     
     return render(request, 'polls/index.html')
+
 
 
 def register_request(request):
