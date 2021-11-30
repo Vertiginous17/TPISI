@@ -3,13 +3,14 @@ from typing import List
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.db.models.fields import EmailField
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from .forms import NewUserForm
 
 # from django.http import Http404
 
-from polls.models import Lar, Equipa, Visita, Produto
+from polls.models import Lar, Equipa, Visita, Produto, User
 
 # Root View
 def index(request):
@@ -61,6 +62,8 @@ def register_request(request):
 def login_request(request):
     # verificamos o metodo para nos certificarmos que é POST 
     # caso nao seja, erro
+    if request.user.is_authenticated:
+        return render(request, "info/index_info.html")
     if request.method == "POST":
         # inicializamos um form com o nosso request e a nossa data, sendo esta data a info do user
         form = AuthenticationForm(request, data=request.POST)
@@ -72,7 +75,7 @@ def login_request(request):
         	if user is not None:
         		login(request, user)
         		messages.info(request, f"You are now logged in as {username}.")
-        		return redirect("/equipas/index_equipa.html")
+        		return redirect("/info/index_info.html")
         	else:
         		messages.error(request,"Invalid username or password.")
         else:
@@ -127,17 +130,17 @@ def index_equipa(request):
 
 def index_visit(request):
     visit_list = Visita.objects.all()
-    # product = Visita.product
+
+    number_infected = 0
 
     context = {
         'visit_list' : []
     }
 
     for visit in visit_list:
-        number_infected = 0
         for u in visit.infected_users.all():
-            number_infected = u.count()
-        
+            number_infected+=1
+
         visit_json = {
             'id' : visit.id,
             'visit_team' : visit.visit_team,
@@ -152,6 +155,8 @@ def index_visit(request):
 
     return render(request, 'visitas/index_visit.html', context)
 
+def count_infected_user(user):
+    return Post.objects.filter(author=user).count()
 
 #Product view
 def index_produto(request):
@@ -171,16 +176,18 @@ def index_produto(request):
     return render(request, 'produtos/index_produto.html', context)
 
 
-def login_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        login(request, user)
-        return render(request, 'equipas/index_equipas.html')
-    else:
-        return HttpResponse('You got an error loggin in')
-        #return render(request, 'polls/index_lares.html')
+# def login_view(request):
+   
+
+#     username = request.POST['username']
+#     password = request.POST['password']
+#     user = authenticate(request, username=username, password=password)
+#     if user is not None:
+#         login(request, user)
+#         return render(request, 'equipas/index_equipas.html')
+#     else:
+#         return HttpResponse('You got an error loggin in')
+#         #return render(request, 'polls/index_lares.html')
 
 def index_info(request):
     return render(request, 'info/index_info.html')

@@ -117,20 +117,19 @@
         <table>
             <tr>
                 <th>Visit Number</th>
-                <th>Responsible Lar</th>
+                <th>Visited Lar Lar</th>
                 <th>Visit Date</th>
                 <th>Responsible Team</th>
                 <th>Brief description of the visit</th>
+                <th>Number of Infected</th>
             </tr>
             <tr>
                 <td>{{ visit.id }}</td>
-                { % for user in visit.infected_users % }
-                    
-                {% endfor %}
-                <td> {{ visit.infected_user }}</td>
+                <td> {{ visit.lar }}</td>
                 <td>{{ visit.visit_date }}</td>
                 <td>{{ visit.visit_team}}</td>
                 <td>{{ visit.description }}</td>
+                <td>{{ visit.infected_users }}</td>
             </tr> 
             <br>
         </table>
