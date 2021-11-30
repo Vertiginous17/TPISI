@@ -43,7 +43,7 @@ class Produto(models.Model):
 # team_user - lista de utilizadores de uma equipa (membros desta)
 class Equipa(models.Model):
     name = models.CharField(max_length=30)
-    team_user = models.ManyToManyField(User)
+    user = models.ManyToManyField(User)
     def __str__(self):
         return self.name
 
@@ -61,8 +61,8 @@ class Visita(models.Model):
     description = models.TextField(default='')
     lar = models.ForeignKey(Lar, on_delete=CASCADE)
     product = models.ManyToManyField(Produto)
-    infected_users = models.ManyToManyField(User)
-    def __strV__(self):
+    infected_users = models.ManyToManyField(User, blank=True,)
+    def __str__(self):
         return self.description
 
 

@@ -110,10 +110,6 @@
     
     <div class="text">
         <ul>
-        {% for visit in visit_list %}
-        
-        <h1>{{visit.visit_team}}</h1>
-
         <table>
             <tr>
                 <th>Visit Number</th>
@@ -123,6 +119,7 @@
                 <th>Brief description of the visit</th>
                 <th>Number of Infected</th>
             </tr>
+            {% for visit in visit_list %}
             <tr>
                 <td>{{ visit.id }}</td>
                 <td> {{ visit.lar }}</td>
@@ -131,9 +128,9 @@
                 <td>{{ visit.description }}</td>
                 <td>{{ visit.infected_users }}</td>
             </tr> 
+            {% endfor %}
             <br>
         </table>
-        {% endfor %}
         </ul>
         {% else %}
         <p>No polls are available</p>

@@ -1,6 +1,6 @@
 <!-- <!DOCTYPE html> -->
 <html>
-<title>Team Page</title>
+<title>Team  Page</title>
 
 <body>
     <div class="topnav">
@@ -111,28 +111,37 @@
 <div class="text">
     <ul>
     {% for equipa in equipa_list %}
-        <h1>{{ equipa.name }}</h1>
+    <h1>{{ equipa.name}}</h1>
         <!-- <button><a href="{% url 'polls:index_visit' %}">Entrar</a></button> -->
-
-        {% if equipa.name %}
+       
         <table>
             <tr>
+                <th>ID</th> 
+                <th>Name</th>
+            </tr>
+            <tr>
+                <td>{{ equipa.id }}</td>
+                <td>{{ equipa.name }}</td>
+                <!--{% for user in equipa_list %}-->
+                <!--<td> {{ user.name}}</td>-->
+                <!--{% endfor %}-->
+            </tr>
+            {% if equipa.users %}
+            <tr>
                 <th>ID</th>
-                <th>Username</th>
                 <th>Name</th>
                 <th>Email</th>
             </tr>
             {% for user in equipa_list %}
             <tr>
                 <td>{{ user.id }}</td>
-                <td>{{ user.username }}</td>
                 <td>{{ user.name }}</td>
                 <td>{{ user.email }}</td>
             </tr>
             {% endfor %}
+            {% endif %}
         </table>
-        {% endif %}
-    {% endfor %}
+   {% endfor %}
     </ul>
 {% else %}
     <p>No polls are available</p>
@@ -191,4 +200,4 @@
     }
 </style>
 </body>
-</html>
+</html> 
