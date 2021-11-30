@@ -9,19 +9,25 @@ from .forms import NewUserForm
 
 # from django.http import Http404
 
-from polls.models import Lar, Equipa, Visita
+from polls.models import Lar, Equipa, Visita, Produto
 
 # Root View
 def index(request):
+    # Checks if user is authenticated, if not, redirects us to the login func
     if not request.user.is_authenticated:
         return render(request, "polls/login.html")
 
+    # Receive all the objects inside a team
     equipas = Equipa.objects.all()
     
+    # we create out dictionary, initially empty. we fill it with info from our teams
     context = {
         'index_list' : []
     }
 
+    # Colocamos a lista de equipas
+    # teams have name and a bunch of users
+    # each user has id, username, name, email, and if it's staff
     for equipa in equipas: 
         index_json = {
             'name' : equipa.name,
@@ -30,27 +36,35 @@ def index(request):
         }
         context['index_list'].append(index_json)
     
+    # renders us to the  index page
     return render(request, 'polls/index.html')
 
-
-
+# Metodo para registar um utilizador
 def register_request(request):
+    # utilizamos o metodo POST para este registo
     if request.method == "POST":
+        # Criamos um user form com o metodo que utilizamos anteriormente
 	    form = NewUserForm(request.POST)
+        # Se este form for valido, guardamos o mesmo e damos login no user
+        # dando a mensagem de que o registo foi feito com sucesso
 	    if form.is_valid():
 		    user = form.save()
 		    login(request, user)
 		    messages.success(request, "Registration successful." )
-		    return redirect("equipas:index_equipa")
+		    return redirect("/equipas/index_equipa.html")
 	    messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render (request=request, template_name="polls/register.html", context={"register_form":form})
 
 
-
+# Metodo para logar um utilizador
 def login_request(request):
+    # verificamos o metodo para nos certificarmos que é POST 
+    # caso nao seja, erro
     if request.method == "POST":
+        # inicializamos um form com o nosso request e a nossa data, sendo esta data a info do user
         form = AuthenticationForm(request, data=request.POST)
+        # se este form for válido
         if form.is_valid():
         	username = form.cleaned_data.get('username')
         	password = form.cleaned_data.get('password')
@@ -58,7 +72,7 @@ def login_request(request):
         	if user is not None:
         		login(request, user)
         		messages.info(request, f"You are now logged in as {username}.")
-        		return redirect("equipas:index_equipa")
+        		return redirect("/equipas/index_equipa.html")
         	else:
         		messages.error(request,"Invalid username or password.")
         else:
@@ -94,24 +108,36 @@ def index_lares(request):
 
 # Equipa view
 def index_equipa(request):
-    equipa = Equipa.objects.all()
-    name = Equipa.objects.name
-    
+    equipa_list = Equipa.objects.all()
+    # name = Equipa.objects.name
+
     context = {
-        'equipa_list' : equipa,
-        'name' : name,
+        'equipa_list' : []
     }
+    for equipa in equipa_list:
+        equipa_json = {
+            'id': equipa.id,
+            'name': equipa.name,
+            'users': [{'id': u.id, 'username': u.username, 'name': u.first_name + ' ' + u.last_name, 
+                        'email': u.email, 'is_staff': u.is_staff } for u in equipa.team_user.all()]
+        }
+    context['equipa_list'].append(equipa_json)
+
     return render(request, 'equipas/index_equipa.html', context)
 
 def index_visit(request):
     visit_list = Visita.objects.all()
-    product = Visita.product
+    # product = Visita.product
 
     context = {
         'visit_list' : []
     }
 
     for visit in visit_list:
+        number_infected = 0
+        for u in visit.infected_users.all():
+            number_infected = u.count()
+        
         visit_json = {
             'id' : visit.id,
             'visit_team' : visit.visit_team,
@@ -119,10 +145,30 @@ def index_visit(request):
             'description' : visit.description,
             'lar' : visit.lar,
             'product' : [{'name': p.name, 'price': p.price, 'quantity': p.quantity} for p in visit.product.all()],
+            'infected_users' : number_infected,
         }
+
         context['visit_list'].append(visit_json)
 
     return render(request, 'visitas/index_visit.html', context)
+
+
+#Product view
+def index_produto(request):
+    product_list = Produto.objects.all()
+    context = {
+        'product_list' : []
+    }
+
+    for product in product_list:
+        product_json = {
+            'name' : product.name,
+            'price' : product.price,
+            'quantity' : product.quantity,
+        }
+        context['product_list'].append(product_json)
+
+    return render(request, 'produtos/index_produto.html', context)
 
 
 def login_view(request):
@@ -136,15 +182,5 @@ def login_view(request):
         return HttpResponse('You got an error loggin in')
         #return render(request, 'polls/index_lares.html')
 
-
-def my_view(request):
-    if not request.user.is_authenticated:
-        return render(request, 'myapp/login_error.html')
-
-def results(request, lar_id):
-    response = "You're looking at what's inside lar number %s."
-    return HttpResponse(response % lar_id)
-
-def detail(request, lar_id):
-    lar = get_object_or_404(Lar, pk=lar_id)
-    return render(request, 'polls/detail.html', {'lar': lar})
+def index_info(request):
+    return render(request, 'info/index_info.html')

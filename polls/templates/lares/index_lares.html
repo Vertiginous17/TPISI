@@ -1,21 +1,23 @@
 <!-- <!DOCTYPE html> -->
+<html>
 <title>Lar Page</title>
-<style>
-    table, th, td {
-      border:1px solid black;
-    }
-</style>
-<div class="topnav">
-    <a class="active" href="/lar/">Lar</a>
-    <a href="/produt/">Produtos</a>
-    <a href="/visit/">Visitas</a>
-    <a href="/equipa/">Equipas</a>
-    <!-- <a href="">Requisições</a> -->
-</div>
+
+<body>
+    <div class="topnav">
+        <a class="active" href="/lar/">Nursing Home</a>
+        <a href="/produto/">Products</a>
+        <a href="/visit/">Visits</a>
+        <a href="/equipa/">Teams</a>
+        <a href="/info/">About Us</a>
+        <!-- <a href="">Requisições</a> -->
+    </div>
 <style>
     .topnav {
-        background-color: black;
+        background-color: #283838;
         overflow: hidden;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        position: fixed;
+        z-index: 2;  
     }
     .topnav a{
         float: left;
@@ -23,71 +25,171 @@
         text-align: center;
         padding: 14px 16px;
         font-size: 17px;
+        text-decoration: none;
+        width: 150px;
     }
     .topnav a:hover{
-        background-color: #808080;
-        color: black;
+        background-color: #463f3f;
+        color: #96D4D4;
     }
     .topnav a.active{
-        background-color: white;
+        background-color: #96D4D4;
         color: black;
     }
 </style>
+
 <div class="center">
 {% if lar_list %}
-    <div class="image">
-        <img src="https://casaderepousoemsaopaulo.com/blog/wp-content/uploads/2019/04/lar-para-idosos.jpg" alt="HTML5" style="width:700px;height:450px">
+    <div class="slide-container">
+        <!--images with number and caption text--> 
+        <div class="slideshow fade">
+            <img src="https://casaderepousoemsaopaulo.com/blog/wp-content/uploads/2019/04/lar-para-idosos.jpg" alt="HTML5" style="width:100%">
+        </div>
+        <div class="slideshow fade">
+            <img src="https://organicsnewsbrasil.com.br/wp-content/uploads/2016/09/idosos.png" alt="HTML5" style="width:100%">
+        </div>
+        <div class="slideshow fade">
+            <img src="http://scmfigueirodosvinhos.pt/v1/images/Lar_idosos/DSC_1098.jpg" alt="HTML5" style="width:100%">
+        </div>
     </div>
-    <style>
-        .image {
-            text-align: center;
-        }
+
+<!--Slide-content style-->
+  <style>
+    * {box-sizing:border-box}
+
+    /* Slideshow container */
+    .slide-container {
+      max-width: 1000px;
+      position: relative;
+      margin: auto;
+      text-align: center;
+      padding-top: 46px;
+    }
+    
+    /* Hide the images by default */
+    .slideshow {
+      display: none;
+    }
+
+    /* Fading animation */
+    .fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+    }
+    
+    @-webkit-keyframes fade {
+        from {opacity: .4}
+        to {opacity: 1}
+    }
+      
+    @keyframes fade {
+        from {opacity: .4}
+        to {opacity: 1}
+    }
     </style>
+
+    <script>
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("slideshow");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}
+        slides[slideIndex-1].style.display = "block";
+        setTimeout(showSlides, 4000); // Change image every 2 seconds
+        }
+    </script>
+
     <div class="text">
         <ul>
-        {% for lar in lar_list %}
-            <li>
-                <h1>{{ lar.name }}</h1>
-                <!-- title does uppercase -->
-                <h2>{{ lar.owner|title }} - CEO</h2>
-                <h3>Users</h3>
-                {% if lar.users %}
-                <table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Staff</th>
-                    </tr>
-                    {% for user in lar.users %}
-                    <tr>
-                        <td>{{ user.id }}</td>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.is_staff }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-                {% endif %}
-            </li>
+        {% for lar in lar_list %}    
+            <h1>{{ lar.name }}</h1>
+            <!-- title does uppercase -->
+            <h2>{{ lar.owner|title }} - CEO</h2>
+                
+            {% if lar.users %}
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Staff</th>
+                </tr>
+                {% for user in lar.users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.is_staff }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+            {% endif %}
         {% endfor %}
         </ul>
         {% else %}
-        <p>No polls are available</p>
+            <p>No polls are available</p>
         {% endif %}
     </div>
     <style>
+        h1 {
+            font-size: 30px;
+            text-transform: uppercase;
+        }
+        h2{
+            padding-left: 50px;
+            font-size: 20px;
+            color: #283838;
+        }
         .text {
-            text-align: center;
+            text-align: left;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        table, th, td {
+            border: 3px solid white;
+            border-collapse: collapse;
+            text-align: center;   
+            padding: 15px 20px 20px 20px;  
+            margin-left: auto;
+            margin-right: auto;
+        }
+        th, td {
+            background-color: #96D4D4;
         }
     </style>
 </div>
-<div class="bottom"> </div>
+
+<div class="bottom"> 
+    <p>Developed by: Patrícia Santos & João Carvalho</p>
+</div>
+<!--bottom style-->
 <style>
     .bottom{
         background-color: black;
-        padding: 14px 16px;
+        padding: 16px 16px;
+        color: white;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        font-size: 12;
+        text-align: center;
+        margin-top: 20px;
     }
 </style>
+
+<!--body style-->
+<style>
+    body {
+        width: 800px;
+        margin: 0 auto;
+    }
+</style>
+</body>
+</html>

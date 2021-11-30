@@ -18,18 +18,15 @@ urlpatterns = [
     # /lar/
     path("lar/", views.index_lares, name='index_lares'),
 
-    # /lar/<id>/
-    path('lar/<int:lar_id>', views.detail, name='detail'),
-
     # /equipas/
     path('equipa/', views.index_equipa, name='index_equipa'),
 
     # /produto/
-    #path('produto/', views.index_produto, name='index_produto'),
+    path('produto/', views.index_produto, name='index_produto'),
 
     # /visit/
-    path('visit/', views.index_visit, name='index_visit')
+    path('visit/', views.index_visit, name='index_visit'),
 
-    
-
+    # /info/
+    path('info/', views.index_info, name='index_info.html')
 ]

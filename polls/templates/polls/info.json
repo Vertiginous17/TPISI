@@ -1,0 +1,20 @@
+[
+    {
+        "pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "nick",
+            "first_name": "Nick",
+            "last_name": "Mick",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "last_login": "2021-09-03T14:07:31.392Z",
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbaasdf_sha256$12001$9Ser7lc1k1pWQFqk0x3u/T6I3",
+            "email": "nick@mick.com",
+            "date_joined": "2021-03-10T15:38:34.406Z"
+        }
+    }
+]
